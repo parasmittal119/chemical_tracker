@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Manager</title>
+    <!-- Add the icon link here -->
+    <link rel="icon" href="{{ url_for('static', filename='./icon.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='./css/styles.css') }}">
+    <style>
+        body {
+            position: relative; /* Make the body the reference point for positioning */
+        }
+        h1 {
+            color: white;
+        }
+        .buttons container {
+            display: flex;
+            gap: 10px; /* Add spacing between buttons */
+        }
+        .top-right-image {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 50px; /* Adjust size as needed */
+            height: 50px; /* Adjust size as needed */
+        }
+        .bottom-right-text {
+            position: absolute;
+            bottom: 40px;
+            right: 10px;
+            width: 300px; /* Adjust size as needed */
+            height: 50px; /* Adjust size as needed */
+            font-size: 25px;
+            margin-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chemical Manager Tool</h1>
+    <img src="{{ url_for('static', filename='./logo_bg.svg') }}" alt="Top Right Image" class="top-right-image" style="width: 250px;height: 70px; margin: 10px;display: flex;justify-content:right;align-items: top;">
+    <div class="buttons">
+        <container>
+            <a href="/register">
+                <button class="button">
+                    <span class="button_lg">
+                        <span class="button_sl"></span>
+                        <span class="button_text">Register</span>
+                    </span>
+                </button>
+            </a>
+            <a href="/validate">
+                <button class="button">
+                    <span class="button_lg">
+                        <span class="button_sl"></span>
+                        <span class="button_text">Validate</span>
+                    </span>
+                </button>
+            </a>
+        </container>
+    </div>
+    <p class="bottom-right-text">~Developed and Maintained by Paras(Prod. Engg.)</p>
+</body>
+</html>
