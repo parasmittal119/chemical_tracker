@@ -5,3 +5,4 @@ Flask  # Adjust to the latest compatible version
 Jinja2  # Adjust to the latest compatible version
 Werkzeug  # Version that works with the latest Flask
 MarkupSafe
+openpyxl
