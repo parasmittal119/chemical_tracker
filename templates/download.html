@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='./icon.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='./css/styles.css') }}">
+    <title>Download Page</title>
+    <style>
+                
+        .top-right-image {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 250px;
+            height: 70px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Select a Database Table to Download</h1>
+    <img src="{{ url_for('static', filename='./logo_bg.svg') }}" alt="Top Right Image" class="top-right-image" style="width: 250px;height: 70px; margin: 10px;">
+    <form id="download-form">
+        <select id="table-select" name="table">
+            {% for table in tables %}
+            <option value="{{ table }}">{{ table }}</option>
+            {% endfor %}
+        </select>
+        <button type="button" onclick="downloadTable()">Download</button>
+    </form>
+    <p class="bottom-right-text">~Developed and Maintained by Paras(Prod. Engg.)</p>
+    <div id="table-container"></div>
+
+    <script>
+        // Function to fetch and display table data
+        function fetchTableData(tableName) {
+            fetch('/get-table-content?table=' + tableName)
+            .then(response => response.json())
+            .then(data => {
+                // Construct table HTML
+                let tableHtml = '<table border="1">';
+                tableHtml += '<thead><tr>';
+                for (let column in data[0]) {
+                    tableHtml += `<th>${column}</th>`;
+                }
+                tableHtml += '</tr></thead><tbody>';
+                for (let row of data) {
+                    tableHtml += '<tr>';
+                    for (let value of Object.values(row)) {
+                        tableHtml += `<td>${value}</td>`;
+                    }
+                    tableHtml += '</tr>';
+                }
+                tableHtml += '</tbody></table>';
+                
+                // Display table in the table container
+                document.getElementById('table-container').innerHTML = tableHtml;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Function to download the selected table as an Excel file
+        function downloadTable() {
+            var selectedTable = document.getElementById('table-select').value;
+            window.location.href = '/download-excel?table=' + selectedTable;
+        }
+
+        // Fetch table data when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            var selectedTable = document.getElementById('table-select').value;
+            fetchTableData(selectedTable);
+        });
+
+        // Event listener to fetch and display table data when a new table is selected
+        document.getElementById('table-select').addEventListener('change', function(event) {
+            var selectedTable = event.target.value;
+            fetchTableData(selectedTable);
+        });
+    </script>
+</body>
+</html>

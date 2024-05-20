@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validation Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='./css/styles.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='./icon.png') }}" type="image/x-icon">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .result-block {
+            text-align: center;
+            margin-right: 20px;
+        }
+
+        .result-block img {
+            width: 100px; /* Set the image width */
+            height: 100px; /* Set the image height */
+            margin-bottom: 10px; /* Add some margin below the image */
+        }
+        p{
+            font-size: 30px;
+            max-width: 600px;
+            word-wrap: break-word;
+            display: flex;
+            justify-content: left;
+            align-items: left;
+        }
+                
+        .top-right-image {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 250px;
+            height: 70px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <img src="{{ url_for('static', filename='./logo_bg.svg') }}" alt="Top Right Image" class="top-right-image" style="width: 250px;height: 70px; margin: 10px;">
+    <div class="result-block">
+        {% if 'is valid to use' in message %}
+        
+        {% else %}
+        {% endif %}
+    
+        {% if "Material not found in database" in message[0] %}
+        <p style="color:red">{{message[0]}}</p>
+        <img src="/static/question-mark_ver_1.png" alt="Tick">
+        {% elif "NOT OK" in message[0] %}
+        <p style="color:red">{{message[0]}}</p>
+        <img src="/static/cross.png" alt="Tick">
+        <p>Description: <u>{{message[1]}}</u></p>
+        <p>Expiry Date: <u>{{message[2]}}</u></p>
+        {% else %}
+        <p style="color:lightgreen">{{message[0]}}</p>
+        <img src="/static/tick.png" alt="Tick">
+        <p>Description: <u>{{message[1]}}</u></p>
+        <p>Expiry Date: <u>{{message[2]}}</u></p>
+        {% endif %}
+    </div>
+    <p class="bottom-right-text">~Developed and Maintained by Paras(Prod. Engg.)</p>
+</body>
+</html>

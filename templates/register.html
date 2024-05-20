@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Chemical</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='./css/styles.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='./icon.png') }}" type="image/x-icon">
+    <style>
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            font-size: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .form-row label {
+            width: 150px; /* Set the width of the label */
+            text-align: left; /* Align label text to the left */
+            margin-right: 20px; /* Add some margin between label and input/select */
+        }
+
+        .form-row input,
+        .form-row select {
+            flex: 1;
+        }
+
+        /* Add additional styling for the submit button */
+        button[type="submit"] {
+            width: 50vh;
+        }
+                
+        .top-right-image {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 250px;
+            height: 70px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <img src="{{ url_for('static', filename='./logo_bg.svg') }}" alt="Top Right Image" class="top-right-image" style="width: 250px;height: 70px; margin: 10px;">
+    <h1>Register a New Chemical</h1>
+    <form id="chemical-form" class="form-container">
+        <div class="form-row">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-row">
+            <label for="description">Description:</label>
+            <select id="description" name="description" required>
+                <option value=""> </option> <!-- Blank option -->
+                {% for description in descriptions %}
+                    <option value="{{ description }}">{{ description }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-row">
+            <label for="vendor">Vendor:</label>
+            <input type="text" id="vendor" name="vendor" required readonly>
+        </div>
+
+        <div class="form-row">
+            <label for="material">Material:</label>
+            <input type="text" id="material" name="material" required readonly>
+        </div>
+
+        <div class="form-row">
+            <label for="manufacturing_date">Manufacturing Date:</label>
+            <input type="date" id="manufacturing_date" name="manufacturing_date" required>
+        </div>
+
+        <div class="form-row">
+            <label for="expiry_date">Expiry Date:</label>
+            <input type="date" id="expiry_date" name="expiry_date" required>
+        </div>
+        <button class="button" type="submit">
+            <span class="button_lg">
+                <span class="button_sl"></span>
+                <span class="button_text">Register</span>
+            </span>
+        </button>
+
+    </form>
+    <p class="bottom-right-text">~Developed and Maintained by Paras(Prod. Engg.)</p>
+
+    <script>
+        document.getElementById('description').addEventListener('change', function() {
+            var description = this.value;
+            fetch('/get-info?description=' + encodeURIComponent(description))
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('vendor').value = data.vendor;
+                    document.getElementById('material').value = data.material;
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        document.getElementById('chemical-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const data = {
+                name: document.getElementById('name').value,
+                vendor: document.getElementById('vendor').value,
+                description: document.getElementById('description').value,
+                material: document.getElementById('material').value,
+                manufacturing_date: document.getElementById('manufacturing_date').value,
+                expiry_date: document.getElementById('expiry_date').value
+            };
+
+            fetch('/save-chemical', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                // Reload the page after registration
+                location.reload();
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
