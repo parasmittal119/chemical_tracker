@@ -1,5 +1,8 @@
-Flask==1.1.4
-Werkzeug==1.0.1
 Flask-SQLAlchemy==2.5.1
 qrcode==7.3.1
 pandas==2.0.2
+
+Flask==2.3.2  # Adjust to the latest compatible version
+Jinja2==3.1.2  # Adjust to the latest compatible version
+Werkzeug==2.0.3  # Version that works with the latest Flask
+MarkupSafe==2.0.1  # Version that works with the Jinja2 version
